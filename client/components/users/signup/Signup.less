@@ -1,0 +1,57 @@
+@import "../../../../lib/styles/main.import.less";
+
+#registration {
+  margin-top: 160px;
+  margin-bottom: 160px;
+  background-color: white;
+  font-family: @Type-Header;
+
+  .signup_Title {
+    width: 100%;
+  }
+
+  .registration_Main {
+    margin-left: 10%;
+    margin-right: 10%;
+  }
+
+  .title {
+    text-align: center;
+    color: @Green-Basic;
+    font-size: 26px;
+  }
+  .subtitle {
+    text-align: center;
+    color: #999;
+    margin-bottom: 40px;
+  }
+
+  label {
+    color: #666;
+    font-size: 18px;
+  }
+
+  input {
+    height: 42px;
+  }
+
+  button {
+    height: 42px;
+    width: 100%;
+    margin-top: 6px;
+    .btnGrad(top, @Green-Basic, @Green-Dark);
+
+    &:hover {
+      .btnGrad(top, @Green-Basic, @Green-Darkest);
+    }
+
+    font-size: 18px;
+    font-weight: 600;
+    border: white;
+  }
+
+  img {
+    width: 100%;
+  }
+
+}

@@ -1,0 +1,31 @@
+/* Color Scheme of The color of 2016, #88B04B, and tradic with 60 degree distance from http://paletton.com/#uid=32r0X0kinnZ8cBHdctbnriWt3dl*/
+@import url(http://fonts.googleapis.com/earlyaccess/cwtexfangsong.css);
+
+@Green-Basic: #88B04B;
+@Green-Light: #B3D67E;
+@Green-Lightest: #D7EFB2;
+@Green-Dark: #638B25;
+@Green-Darkest: #3F6209;
+
+@Orange-Basic: #BF8851;
+@Orange-Light: #E9B889;
+@Orange-Lightest: #FFDEBE;
+@Orange-Dark: #975F28;
+@Orange-Darkest: #6A3A0A;
+
+@Purple-Basic: #544083;
+@Purple-Light: #76649F;
+@Purple-Lightest: #A194BF;
+@Purple-Dark: #382467;
+@Purple-Darkest: #200E49;
+
+@Type-Header: "Signika", sans-serif, Helvetica, 'cwTeXFangSong','STKaiTi', "Microsoft YaHei";
+
+.btnGrad (@origin, @start, @stop) {
+	background-color: @start;
+	background-image: -webkit-linear-gradient(@origin, @start, @stop);
+	background-image: -moz-linear-gradient(@origin, @start, @stop);
+	background-image: -o-linear-gradient(@origin, @start, @stop);
+	background-image: -ms-linear-gradient(@origin, @start, @stop);
+	background-image: linear-gradient(@origin, @start, @stop);
+}

@@ -1,0 +1,52 @@
+@import "../../../lib/styles/main.import.less";
+
+
+#mainHeader {
+  min-height: 80px;
+  background-color: white;
+  .navHolder {
+    margin: 12px 12% 12px 12%;
+  }
+
+  .nav {
+    margin-left: 30px;
+  }
+
+  .navItem {
+    margin-left: 30px;
+    margin-top: 15px;
+    padding: 0 0 6px 0;
+    margin-bottom: auto;
+    font-family: @Type-Header;
+    font-size: 18px;
+    color: @Green-Basic;
+    font-weight: 400;
+  }
+
+  .navComponent {
+    &:hover {
+      color:  @Green-Dark;
+      border-bottom: 2px solid @Green-Dark;
+    }
+  }
+
+  .sign-up {
+    color: white;
+    font-family: @Type-Header;
+    font-size: 18px;
+    margin-left: 30px;
+    padding: 12px 18px 12px 18px;
+
+    .btnGrad(top, @Orange-Basic, @Orange-Dark);
+
+    &:hover {
+      .btnGrad(top, @Orange-Basic, @Orange-Darkest);
+    }
+  }
+
+}
+
+#logo img {
+  height: 60px;
+  width: 120px;
+}
