@@ -39,11 +39,26 @@ publicRoutes.route('/signup', {
   }
 });
 
+publicRoutes.route('/login', {
+  name: 'Log In',
+  action: function(){
+    mount(UserLogin,{
+    })
+  }
+});
+
+publicRoutes.route('/user_test', {
+  name: 'User_test',
+  action: function(){
+    mount(User_Test,{
+    })
+  }
+});
 
 privateRoutes.route('/dashboard', {
   name: 'Dashboard',
   action: function(){
-    mount(DashboardLayout,{
+    mount(Dashboard,{
     })
   }
 });

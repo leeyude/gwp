@@ -1,0 +1,58 @@
+@import "../../../../lib/styles/main.import.less";
+
+
+#userLogin {
+  padding-top: 150px;
+  background-color: lighten(@Green-Basic, 30%);
+  font-family: @Type-Header;
+  padding-bottom: 120px;
+
+  .col-center {
+    margin: 0 auto;
+    float: none !important;
+  }
+
+  .login-group {
+    border: 1px solid #e6e6e6;
+    padding: 20px;
+    border-radius: 8px;
+    background-color: white;
+  }
+
+  h2 {
+    text-align: center;
+    color: @Green-Basic;
+
+  }
+
+  .form-group {
+    margin-bottom: 10px;
+  }
+
+  button {
+    width: 100%;
+    border: none;
+
+    .btnGrad(top, @Green-Basic, @Green-Dark);
+
+    &:hover {
+      .btnGrad(top, @Green-Basic, @Green-Darkest);
+    }
+  }
+
+  label {
+    color: #777;
+  }
+
+  .form-divider {
+    border-bottom: 1px solid #cccccc;
+    margin-top: 20px;
+    margin-bottom: 20px;
+    position: relative;
+    text-align: center;
+  }
+
+  .signin-link {
+    text-align: center;
+  }
+}

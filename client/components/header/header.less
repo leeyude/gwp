@@ -1,7 +1,7 @@
 @import "../../../lib/styles/main.import.less";
 
 
-#mainHeader {
+#mainHeader, #regHeader {
   min-height: 80px;
   background-color: white;
   .navHolder {
@@ -49,4 +49,86 @@
 #logo img {
   height: 60px;
   width: 120px;
+}
+
+#regHeader {
+  text-align: center;
+  #logo {
+    float: left;
+  }
+
+  @media only screen and (max-width: 991px) {
+    #logo img{
+      margin-top: 12px;
+      height: 30px;
+      width: 60px;
+    }
+
+    #regProgress {
+      margin-right: -15%;
+      margin-left: 0 !important;
+
+
+    }
+
+  }
+
+  #regProgress {
+    margin-top: 16px;
+    margin-left: -10%;
+    display: inline-block;
+    overflow: hidden;
+    vertical-align: baseline;
+
+    ul {
+      list-style: none;
+      padding: 0;
+      position: relative;
+    }
+
+    .regStep {
+      font-family: @Type-Header;
+      font-size: 18px;
+      color: #777;
+      display: inline-block;
+
+      .lineSeparator {
+        border-bottom: solid #777 1px;
+        width: 60px;
+        display: inline-block;
+
+      }
+
+      span {
+        display: inline-block;
+      }
+
+      span+span {
+        margin-left: 8px;
+      }
+
+      img {
+        top: -10px;
+        width: 22px;
+        height: 22px;
+      }
+
+      @media only screen and (max-width: 991px) {
+        margin-right: 2%;
+        .stepText {
+          display: none;
+        }
+      }
+
+
+    }
+
+
+  }
+
+  @media only screen and (max-width: 991px) {
+    #regProgress {
+      float: right;
+    }
+  }
 }
