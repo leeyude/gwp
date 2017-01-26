@@ -36,6 +36,22 @@ publicRoutes.route('/signup', {
   action: function(){
     mount(Signup,{
     })
+  },
+  subscriptions: function() {
+    this.register('currentUser', Meteor.subscribe('currentUser'));
+  }
+});
+
+publicRoutes.route( '/verify-email/:token', {
+  name: 'Verify Email',
+  action: function( params ) {
+    Accounts.verifyEmail( params.token, function(error, result){
+      if ( error ) {
+        return error
+      } else {
+        FlowRouter.go( '/signup' );
+      }
+    });
   }
 });
 
@@ -44,13 +60,21 @@ publicRoutes.route('/login', {
   action: function(){
     mount(UserLogin,{
     })
-  }
+  },
 });
 
 publicRoutes.route('/user_test', {
   name: 'User_test',
   action: function(){
-    mount(User_Test,{
+    mount(RegDelivery,{
+    })
+  }
+});
+
+publicRoutes.route('/upload', {
+  name: 'Upload',
+  action: function(){
+    mount(Upload,{
     })
   }
 });

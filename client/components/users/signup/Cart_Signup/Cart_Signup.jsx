@@ -1,13 +1,12 @@
 import React from 'react';
 
+Cart_Signup = React.createClass({
 
-User_Test = React.createClass({
-  
 
   render(){
     return (
       <div>
-      test
+       Cart
       </div>
 
 

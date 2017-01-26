@@ -1,32 +1,77 @@
 @import "../../../../lib/styles/main.import.less";
 
 
-#userLogin {
+#userLogin, #passwordReset {
   padding-top: 150px;
-  background-color: lighten(@Green-Basic, 30%);
+  background-color: lighten(@Green-Basic, 45%);
   font-family: @Type-Header;
-  padding-bottom: 120px;
+  padding-bottom: 100px;
 
   .col-center {
     margin: 0 auto;
     float: none !important;
   }
 
-  .login-group {
+  .login-group, .passReset-group {
     border: 1px solid #e6e6e6;
     padding: 20px;
-    border-radius: 8px;
+    border-radius: 4px;
     background-color: white;
+    box-shadow: 0px 1px 4px 0px rgba(0,0,0,0.08), inset 0px 0px 0px 1px #f0f2f7;
   }
 
   h2 {
     text-align: center;
     color: @Green-Basic;
-
   }
 
   .form-group {
     margin-bottom: 10px;
+  }
+
+  .row {
+    margin-top: 15px;
+    .col-xs-6 {
+      color: #777;
+
+      p {
+        margin-top: 1px;
+        margin-left: 8px;
+        width: auto;
+        float: left;
+      }
+
+      .rememberMe {
+        float: left;
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+        border: solid 1px #777;
+        border-radius: 2px;
+
+      }
+
+      .rememberMeChecked {
+        float: left;
+        width: 20px;
+        height: 20px;
+        display: inline-block;
+        border: solid 1px @Green-Basic;
+        border-radius: 2px;
+        background-color: @Green-Basic;
+      }
+
+      .fa-check {
+        padding-top: 2px;
+        color: white;
+        text-align: center;
+      }
+    }
+  }
+
+
+  label {
+    color: #777;
   }
 
   button {
@@ -40,9 +85,7 @@
     }
   }
 
-  label {
-    color: #777;
-  }
+
 
   .form-divider {
     border-bottom: 1px solid #cccccc;
@@ -55,4 +98,54 @@
   .signin-link {
     text-align: center;
   }
+
+  .error {
+    color: @Orange-Light;
+  }
+
+  input {
+    height: 40px;
+  }
+}
+
+#passwordReset {
+  padding-bottom: 200px;
+
+  .passReset-group {
+    width: 100%;
+    display: inline-block;
+  }
+
+  .resetTitle {
+    display: inline-block;
+    float: left;
+    width: 100%;
+  }
+
+  .form-divider {
+    float: left;
+    width: 100%;
+  }
+
+  .resetTitle+.form-divider {
+    margin-top: 0;
+  }
+
+  .resetCancel {
+    float: right;
+    font-size: 30px;
+    color: @Green-Basic;
+    margin-top: 14px;
+  }
+
+  .form-group+.form-group {
+    margin-top: 30px;
+    margin-bottom: 40px;
+  }
+
+  h2 {
+    float: left;
+  }
+
+
 }

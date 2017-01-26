@@ -1,7 +1,7 @@
 @import "../../../../lib/styles/main.import.less";
 
-#registration {
-  margin-top: 160px;
+#registration, #emailVerification, #regDelivery {
+  margin-top: 150px;
   margin-bottom: 80px;
   background-color: white;
   font-family: @Type-Header;
@@ -20,11 +20,13 @@
     color: @Green-Basic;
     font-size: 26px;
   }
+
   .subtitle {
     text-align: center;
     color: #999;
     margin-bottom: 40px;
   }
+
 
   label {
     color: #666;
@@ -33,6 +35,17 @@
 
   input {
     height: 42px;
+  }
+
+  .reverify, .rereg {
+    text-align: center;
+    margin-bottom: 50px;
+  }
+
+  .btn-reverify, .btn-rereg {
+    width: 180px;
+    color: white;
+    font-weight: 300;
   }
 
   button {
@@ -60,6 +73,44 @@
     padding-left: 5%;
     padding-right: 5%;
 
+  }
+
+  .error {
+    color: @Orange-Light;
+  }
+
+}
+
+#emailVerification {
+  text-align: center;
+
+  .verificationFrame {
+    border: solid 1px #bbb;
+    border-radius: 4px;
+    display: inline-block;
+    padding: 35px 45px 0 45px;
+    margin-bottom: 30px;
+
+  }
+
+  .email {
+    margin-bottom: 20px;
+    padding: 20px;
+    text-decoration: underline;
+  }
+
+  .error {
+    font-size: 16px;
+    margin-top: 20px;
+  }
+
+
+  p {
+    margin-top: 10px;
+    font-size: 18px;
+    a {
+      cursor: pointer;
+    }
   }
 
 }
