@@ -71,13 +71,31 @@ publicRoutes.route('/user_test', {
   }
 });
 
-publicRoutes.route('/upload', {
+publicRoutes.route('/upload-districts', {
   name: 'Upload',
   action: function(){
     mount(Upload,{
     })
   }
 });
+
+publicRoutes.route('/upload-croptype', {
+  name: 'CropTypes',
+  action: function(){
+    mount(Upload_crops,{
+    })
+  }
+});
+
+
+publicRoutes.route('/upload-transactions', {
+  name: 'Transactions',
+  action: function(){
+    mount(Upload_transactions,{
+    })
+  }
+});
+
 
 privateRoutes.route('/dashboard', {
   name: 'Dashboard',

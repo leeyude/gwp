@@ -72,5 +72,6 @@ Meteor.publish("cities", function(){
 });
 
 Meteor.publish("districts", function(citySelected){
+
   return Districts.find({City_County:citySelected});
 });

@@ -42,6 +42,7 @@ RegDelivery = React.createClass({
   getInitialState: function() {
     return {
       citySelect: false,
+      districtSelect: false,
     }
   },
 
@@ -51,6 +52,27 @@ RegDelivery = React.createClass({
       return <CityList key={city._id} name={city.name}/>;
     });
     return cities;
+  },
+
+  displayDistricts(){
+    if(this.state.citySelect){
+      return (
+        <div className="districtSelect">
+          <label className="col-md-6" htmlFor="sel2">鄉鎮市區：</label>
+          <div className="col-md-6">
+            <select onChange={this.handleDistrictOptions} className="form-control" id="districtSelect">
+              <option>-</option>
+              {this.renderDistricts()}
+            </select>
+          </div>
+
+        </div>
+      );
+    };
+  },
+
+  displayAddressInput(){
+    return false;
   },
 
   renderDistricts(){
@@ -71,6 +93,8 @@ RegDelivery = React.createClass({
     var citySelected = $('#citySelect').val();
     if(citySelected== '-'){
       this.setState( { citySelect: false} );
+      this.setState( { districtSelect: false} );
+
     }else{
       this.setState( { citySelect: citySelected} );
     };
@@ -80,7 +104,15 @@ RegDelivery = React.createClass({
 
   handleDistrictOptions (e){
     e.preventDefault();
-    districtSelected = $('#districtSelect').val();
+    var districtSelected = $('#districtSelect').val();
+
+    if(districtSelected== '-'){
+      this.setState( { districtSelect: false} );
+    }else{
+      this.setState( { districtSelect: districtSelected} );
+    };
+
+    console.log(this.state.districtSelect);
 
 
   },
@@ -89,38 +121,85 @@ RegDelivery = React.createClass({
 
     return (
       <div>
-        <RegHeader/>
         <div id="regDelivery">
           <div className="regDelivery-box clearfix">
             <div className="regDelivery-column col-md-4 col-md-push-6">
+          
+
 
             </div>
             <div className="registration-column col-md-4 col-md-pull-2 text-center">
               <div className="form-group">
-                <div className="">
-                  <div className="">
+                <div className="inputBlock">
+                  <div className="businessNameInput">
+                    <label className="col-md-6">商號名稱：</label>
+                    <div className="col-md-6">
+                      <input type="text" placeholder="商號名稱" className="form-control mobile_input"/>
+                    </div>
                   </div>
-                  <label htmlFor="sel1">所在縣市：</label>
-                  <select onChange={this.handleCityOptions} className="form-control" id="citySelect">
-                    <option>-</option>
-                    {this.renderCities()}
-                  </select>
-                  <br />
 
-                  <label htmlFor="sel2">鄉、鎮、市、區：</label>
-                  <select onChange={this.handleDistrictOptions} className="form-control" id="districtSelect">
-                    <option>-</option>
-                    {this.renderDistricts()}
-                  </select>
+                  <div className="uniNumInput">
+                    <label className="col-md-6">統一編號：</label>
+                    <div className="col-md-6">
+                      <input type="text" placeholder="統一編號" className="form-control mobile_input"/>
+                    </div>
+                  </div>
 
+                  <div className="citySelect">
+                    <label className="col-md-6" htmlFor="city">所在縣市：</label>
+                    <div className="col-md-6">
+                      <select onChange={this.handleCityOptions} className="form-control" id="citySelect">
+                        <option>-</option>
+                        {this.renderCities()}
+                      </select>
+                    </div>
+
+
+                  </div>
+                  {this.displayDistricts()}
+                  <div className="addressInput">
+                    <label className="col-md-6">地址：</label>
+                    <div className="col-md-12">
+                      <input type="text" placeholder="地址" className="form-control address_input"/>
+                    </div>
+                  </div>
+
+                  <div className="contactInput">
+                    <label className="col-md-6">聯絡人姓名：</label>
+                    <div className="col-md-6">
+                      <input type="text" placeholder="聯絡人姓名" className="form-control contact_input"/>
+                    </div>
+                  </div>
+
+                  <div className="phoneInput">
+                    <label className="col-md-6">電話（市話）：</label>
+                    <div className="col-md-6">
+                      <input type="text" placeholder="市話號碼" className="form-control phone_input"/>
+                    </div>
+                  </div>
+
+                  <div className="mobileInput">
+                    <label className="col-md-6">電話（行動）：</label>
+                    <div className="col-md-6">
+                      <input type="text" placeholder="行動電話號碼" className="form-control mobile_input"/>
+                    </div>
+                  </div>
+
+                  {this.displayAddressInput()}
 
                 </div>
+
+
+                <div className="">
+                </div>
+                <div className="">
+                </div>
+
               </div>
 
             </div>
           </div>
         </div>
-        <Footer/>
       </div>
 
 

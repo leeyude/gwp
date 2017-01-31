@@ -1,5 +1,5 @@
 Meteor.methods({
-  user_reg: function(email, password){
+  user_reg: function(email, password, city){
     Accounts.createUser({
       email: email,
       password: password,
@@ -10,14 +10,15 @@ Meteor.methods({
           planConfirmed: false
         },
 
+        location: city,
 
-      }
+      },
+
     });
     var user= Meteor.users.findOne({'emails.0.address': email});
 
     if ( user._id ) {
       return Accounts.sendVerificationEmail( user._id );
-
     };
 
   },

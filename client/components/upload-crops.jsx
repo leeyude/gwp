@@ -1,6 +1,6 @@
 import React from 'react';
 
-export default Upload = React.createClass({
+export default Upload_crops = React.createClass({
   submitFile(e){
     e.preventDefault();
     console.log("submit");
@@ -10,7 +10,7 @@ export default Upload = React.createClass({
       complete( result ) {
         console.log(result);
 
-        Meteor.call("parseUpload", result.data, function(error, result){
+        Meteor.call("parseUpload_crops", result.data, function(error, result){
           if(error){
 
           }
@@ -26,7 +26,7 @@ export default Upload = React.createClass({
   render(){
     return (
       <div>
-      <h4 className="page-header">Upload a CSV</h4>
+      <h4 className="page-header"><strong>for Crops! </strong>Upload a CSV</h4>
       <input onChange={this.submitFile} type="file" name="uploadCSV" />
       </div>
 

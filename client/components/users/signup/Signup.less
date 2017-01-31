@@ -1,8 +1,8 @@
 @import "../../../../lib/styles/main.import.less";
 
-#registration, #emailVerification, #regDelivery {
-  margin-top: 150px;
-  margin-bottom: 80px;
+#registration, #emailVerification, #regDelivery, #regCart {
+  margin-top: 120px;
+  margin-bottom: 60px;
   background-color: white;
   font-family: @Type-Header;
 
@@ -33,7 +33,7 @@
     font-size: 18px;
   }
 
-  input {
+  input, select {
     height: 42px;
   }
 
@@ -79,9 +79,18 @@
     color: @Orange-Light;
   }
 
+  .fa-spinner {
+    float: right;
+    margin-top: 3px;
+    color: white;
+  }
+
 }
 
 #emailVerification {
+  margin-top: 150px;
+  margin-bottom: 80px;
+
   text-align: center;
 
   .verificationFrame {
@@ -112,5 +121,155 @@
       cursor: pointer;
     }
   }
+
+}
+
+#regDelivery {
+  .inputBlock {
+    .citySelect,  .districtSelect {
+      width: 100%;
+      display: inline-block;
+    }
+
+    label {
+      margin-top: 7px;
+      text-align: left;
+      float: left;
+    }
+  }
+
+}
+
+#regCart {
+  .regCart-content {
+    width: 1170px;
+    margin: 0 auto;
+  }
+
+  @media only screen and (max-width: 1180px) and (min-width: 991px) {
+    .regCart-content {
+      width: auto;
+      margin-right: 30px;
+      margin-left: 30px;
+    }
+
+  }
+
+  @media only screen and (max-width: 990px) {
+    .regCart-content {
+      width: auto;
+      margin-right: 40px;
+      margin-left: 40px;
+    }
+
+  }
+
+  .fa-opencart {
+    float: left;
+    margin-top: 5px;
+    color: @Green-Basic;
+  }
+
+  h3 {
+    margin: 0;
+    width: auto;
+    float: left;
+  }
+
+  .fa-opencart+h3 {
+    margin-left: 12px;
+    color: @Green-Basic;
+  }
+
+  .form-divider {
+    width: 100%;
+    float: left;
+    border-bottom: 1px solid #cccccc;
+    margin-top: 10px;
+    margin-bottom: 20px;
+    position: relative;
+    text-align: center;
+  }
+
+  .cartHeader {
+    color: #777;
+    h3 {
+      float: left;
+      margin: 0;
+
+    }
+
+    .editCart {
+      float: left;
+      width: auto;
+      i {
+        margin-left: 16px;
+        margin-top: 5px;
+      }
+    }
+
+    .cartDaysRow {
+      float: right;
+      width: auto;
+      margin-top: 5px;
+
+      .cartDaysTitle {
+        float: left;
+      }
+
+      .cartDaysBlock {
+        float: left;
+        display: inline-block;
+
+        .cartDay {
+          display: inline-block;
+          float: left;
+          height: 20px;
+          width: 20px;
+          border: solid 1px;
+          border-radius: 2px;
+        }
+
+        .cartDay+.cartDay {
+          margin-left: 6px;
+        }
+      }
+
+
+    }
+  }
+
+  .cartDetailRow {
+    margin-top: 15px;
+
+    .cartDetail {
+      padding: 15px;
+      border: solid 1px #AAA;
+      border-radius: 4px;
+      background-color: lighten(@Purple-Lightest, 30%);
+
+      .costThisCart, .savingThisCart {
+        width: 100%;
+
+
+        .costThisCartSum, .savingThisCartSum {
+          margin-top: 6px;
+          margin-left: 15px;
+          float: right;
+          font-size: 18px;
+        }
+
+        .costThisCartTitle, .savingThisCartTitle {
+          float: right;
+        }
+      }
+
+
+    }
+  }
+
+
+
+
 
 }
