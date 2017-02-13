@@ -104,3 +104,11 @@ privateRoutes.route('/dashboard', {
     })
   }
 });
+
+privateRoutes.route('/admin/croplist', {
+  name: 'Crop List',
+  action: function(){
+    mount(CropList,{
+    })
+  }
+});

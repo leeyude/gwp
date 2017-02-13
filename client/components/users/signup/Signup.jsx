@@ -38,6 +38,7 @@ Signup = React.createClass({
   },
 
   renderCities(){
+
     var cities = this.data.cities.map(function(city){
 
       return <CityList key={city._id} name={city.name}/>;

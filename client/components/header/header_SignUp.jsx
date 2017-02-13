@@ -22,13 +22,13 @@ RegHeader = React.createClass({
               <span className="stepImg">
                 <img src="/images/2_off.png"></img>
               </span>
-              <span className={this.props.cartIsSet} className="stepText" >基本資料</span>
+              <span className={this.props.cartIsSet} className="stepText" >設計菜車</span>
             </div>
             <div className="regStep col-md-3 col-xs-1">
               <span className="stepImg">
                 <img src="/images/3_off.png"></img>
               </span>
-              <span className={this.props.cartIsSet} className="stepText"> 設計菜籃</span>
+              <span className={this.props.cartIsSet} className="stepText">基本資料 </span>
             </div>
             <div className="regStep col-md-3 col-xs-1">
               <span className="stepImg">
