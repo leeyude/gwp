@@ -1,0 +1,34 @@
+@import "../../../../lib/styles/main.import.less";
+
+#marketEditModal {
+  label {
+    float: left;
+    width: 100%;
+  }
+
+  .cityColumn {
+    border: solid 1px #777;
+    float: left;
+    padding: 10px;
+    display: inline-block;
+
+    .cityItem {
+      padding: 6px;
+      border: solid 1px #777;
+      float: left;
+      display: inline-block;
+      width: auto;
+      margin-top: 6px;
+      margin-left: 6px;
+      border-radius: 2px;
+      cursor: pointer;
+    }
+
+    .cityItem:hover {
+      border: solid 2px @Green-Basic;
+      padding: 5px;
+
+      color: @Green-Basic;
+    }
+  }
+}

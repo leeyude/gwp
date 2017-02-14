@@ -65,5 +65,5 @@ Meteor.publish("availableItems", function(){
 });
 
 Meteor.publish("availableVarieties", function(){
-  return CropTypes.find();
+  return CropTypes.find({'isImported': 'false'});
 });

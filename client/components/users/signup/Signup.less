@@ -334,6 +334,7 @@
       border-bottom: solid 1px #888;
       border-radius: 4px;
       display: inline-block;
+      position: relative;
       float: left;
       padding: 11px 11px 10px 11px;
       cursor: pointer;
@@ -347,12 +348,14 @@
       background-color: lighten(@Orange-Light, 25%);
 
       i {
+        font-size: 20px;
         color: @Orange-Basic;
         display: inline-block;
         position: absolute;
-        top: -2px;
         cursor: pointer;
         z-index: 1;
+        top: -2px;
+        right: -2px;
       }
     }
 
@@ -536,23 +539,8 @@
             border-radius: 4px;
             background-color: @Green-Basic;
 
-            .deleteItem {
-              display: none;
-              position: absolute;
-              top: -8px;
-              right: -5px;
-
-              i {
-                cursor: pointer;
-                color: @Orange-Basic;
-                padding: 2px;
-                font-size: 16px;
-              }
-
-
-            }
-
             .cartDetailItemLeft {
+              position: relative;
               float: left;
               width: 25%;
               display: inline-block;
@@ -567,6 +555,94 @@
                 padding-bottom: 10px;
                 border-bottom: solid 2px white;
               }
+
+              .editMenu {
+                display: inline-block;
+                position: absolute;
+                top: 3px;
+                right: 3px;
+
+                i {
+                  cursor: pointer;
+                  color: white;
+                  padding: 2px;
+                  font-size: 20px;
+                }
+
+                .editMenuBlock {
+                  display: none;
+                  position: absolute;
+                  width: 140px;
+                  height: 92px;
+                  right: -150px;
+                  top: -11px;
+                  border-radius: 2px;
+                  background-color: rgba(0,0,0,.5);
+                  box-shadow: 0 1px 3px rgba(0,0,0,.33);
+                  padding: 10px 20px 10px 10px;
+                  z-index: 1;
+
+                  .arrow-left {
+                    position: absolute;
+                    left: -6px;
+                    top: 15px;
+                    width: 0;
+                    height: 0;
+                    border-top: 6px solid transparent;
+                    border-bottom: 6px solid transparent;
+                    border-right:6px solid rgba(0,0,0,.5);
+                  }
+
+                  .editMenuEdit, .editMenuDelete {
+                    cursor: pointer;
+                    display: inline-block;
+                    position: relative;
+                    float: left;
+                    width: 100%;
+                    color: #eee;
+                    padding: 2px 6px 2px 6px;
+
+                    i {
+                      float: left;
+                      color: #eee;
+                      margin-top: 4px;
+                    }
+
+                    i+h6 {
+                      width: auto;
+                      float: right;
+                      font-size: 14px;
+                      margin-top: 7px;
+                    }
+                  }
+
+                  .editMenuEdit:hover, .editMenuDelete:hover {
+                    background-color: rgba(136,176, 75,.4);
+                    border-bottom: solid 2px rgb(136,176, 75);
+                    padding-bottom: 0;
+                    border-radius: 4px;
+                  }
+
+                  .editMenuCancel {
+                    display: inline-block;
+                    position: absolute;
+                    cursor: pointer;
+                    top: 0;
+                    right: 0;
+                    color: #eee;
+                    font-size: 14px;
+                  }
+                }
+
+
+                &.editing {
+                  .editMenuBlock {
+                    display: inline-block;
+                  }
+                }
+              }
+
+
 
               .itemGrade {
                 margin-right: 10%;
@@ -759,12 +835,6 @@
             }
           }
 
-          .cartDetailItem:hover {
-            .deleteItem {
-              display: inline-block;
-            }
-          }
-
           .cartDetailEmpty {
             border-top: solid 1px #888;
             margin-top: 15px;
@@ -787,6 +857,7 @@
             .cartDetailItemRight {
               background-color: lighten(@Orange-Basic, 45%);
             }
+
             .inputDetailHeader {
               .purchaseHeaderItem, .estimateHeaderItem {
                 background-color: lighten(@Orange-Basic, 45%)!important;
@@ -826,6 +897,39 @@
       width: 100%;
       display: inline-block;
       margin-bottom: 15px;
+
+      .allCartSummaryTitle {
+        width: auto;
+        position: relative;
+        float: left;
+
+        h4 {
+          margin: 0;
+        }
+      }
+
+      .allCartSummaryContent {
+        display: inline-block;
+        width: auto;
+        float: right;
+
+        .allCartSummaryDeliveryDay {
+          display: inline-block;
+          font-size: 14px;
+          padding: 2px 6px 2px 6px;
+          border: solid 1px #888;
+          border-radius: 2px;
+          background-color: white;
+        }
+
+        .allCartSummaryDeliveryDay + .allCartSummaryDeliveryDay {
+          margin-left: 4px;
+        }
+
+        select {
+          height: 26px;
+        }
+      }
     }
   }
 

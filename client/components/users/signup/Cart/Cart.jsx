@@ -1,7 +1,6 @@
 import React from 'react';
 import { CropTypes, CropItems } from '../../../../../imports/collections/crops/cropTypes';
 
-
 export default RegCart = React.createClass({
   mixins: [ReactMeteorData],
   getMeteorData(){
@@ -19,7 +18,6 @@ export default RegCart = React.createClass({
       availableVarieties = CropTypes.find().fetch();
     };
 
-
     return {
       availableItems_handle: !availableItems_handle.ready(),
       availableItems: availableItems,
@@ -36,6 +34,7 @@ export default RegCart = React.createClass({
       cartEditing: false,
       cartEditingContent: {},
       enteringLineError: 'col-xs-12 hide',
+      itemOnEdit: false,
     }
   },
 
@@ -73,7 +72,7 @@ export default RegCart = React.createClass({
 
           <div key={item} className='cartTag selectedCartTag'>
             <h3>{item}</h3>
-            <i className="fa fa-minus-circle fa-2" aria-hidden="true" onClick={(e) => this.deleteCart(location)}></i>
+            <i className="fa fa-times-circle-o" aria-hidden="true" onClick={(e) => this.deleteCart(location)}></i>
           </div>
         );
       }else{
@@ -81,7 +80,7 @@ export default RegCart = React.createClass({
         return (
           <div key={item} className='cartTag'  onClick={(e)=>this.selectCartTag(location)}>
             <h3>{item}</h3>
-            <i className="fa fa-minus-circle fa-2" aria-hidden="true" onClick={(e) => this.deleteCart(location)}></i>
+            <i className="fa fa-times-circle-o" aria-hidden="true" onClick={(e) => this.deleteCart(location)}></i>
           </div>
         );
       }
@@ -133,8 +132,8 @@ export default RegCart = React.createClass({
   selectCartTag: function(location){
     this.setState( { cartView: location});
     this.setState( { cartEditing: false});
-    this.setState({ itemSelected: []});
-
+    this.setState( { itemSelected: []});
+    this.setState( { itemOnEdit: false});
   },
 
   cartDeliveryDay: function(){
@@ -308,78 +307,182 @@ export default RegCart = React.createClass({
       return thisCart.itemDetails.map(function(eachItem){
         var cartNum = this.state.cartView;
 
-        return (
-          <div key={eachItem.itemId} className='cartDetailItem' onClick={(e) => this.deleteCartItem(cartNum, eachItem)}>
-            <div className='deleteItem'>
-              <i className="fa fa-minus-circle" aria-hidden="true"></i>
-            </div>
-            <div className='cartDetailItemLeft'>
-              <div className='itemName'>
-                <h3>{eachItem.itemName}</h3>
-              </div>
-              <div className='itemGrade'>
-                <div className='itemGradeRow'>
-                  <div className='itemGradeSelection'>
-                    <h4>{eachItem.grade}</h4>
-                  </div>
-                  <div className='itemGradeTitle'>
-                    <h4>品級：</h4>
+        if(this.state.itemOnEdit == eachItem.itemId){
+          return (
+            <div key={eachItem.itemId} className='cartDetailItem'>
+              <div className='cartDetailItemLeft'>
+                <div className='itemName'>
+                  <h3>{eachItem.itemName}</h3>
+                  <div className='editMenu editing' onClick={(e)=> this.clickItemEditMenu(eachItem)}>
+                    <i className="fa fa-ellipsis-v" aria-hidden="true"></i>
+                    <div className='editMenuBlock'>
+                      <div className="arrow-left"></div>
+                      <div className='editMenuEdit'>
+                        <i className="fa fa-pencil-square-o" aria-hidden="true"></i>
+                        <h6>編輯品項</h6>
+                      </div>
+                      <div className='editMenuDelete' onClick={(e) =>   this.deleteCartItem(cartNum, eachItem)}>
+                        <i className="fa fa-trash" aria-hidden="true"></i>
+                        <h6>刪除品項</h6>
+                      </div>
+                      <div className='editMenuCancel'>
+                        <i className="fa fa-times" aria-hidden="true"></i>
+                      </div>
+
+                    </div>
                   </div>
 
                 </div>
-              </div>
-            </div>
-            <div className='cartDetailItemRight'>
-              <div className='inputDetailHeader'>
+                <div className='itemGrade'>
+                  <div className='itemGradeRow'>
+                    <div className='itemGradeSelection'>
+                      <h4>{eachItem.grade}</h4>
+                    </div>
+                    <div className='itemGradeTitle'>
+                      <h4>品級：</h4>
+                    </div>
 
-                <div className='col-xs-4 col-xs-offset-2 purchaseHeader'>
-                  <div className='row'>
-                    採購計畫
-                  </div>
-                  <div className='row purchaseHeaderItem'>
-                    <div className='col-xs-6'>
-                      <div className='row'>
-                        預算($/KG)
-                      </div>
-                    </div>
-                    <div className='col-xs-6'>
-                      <div className='row'>
-                        數量(KG)
-                      </div>
-                    </div>
                   </div>
                 </div>
-                <div className='col-xs-5 estimateHeader'>
-                  <div className='row'>
-                    交易與市場預估
-                  </div>
-                  <div className='row estimateHeaderItem'>
-                    <div className='col-xs-4'>
-                      <div className='row'>
-                        成交價
-                      </div>
-                    </div>
-                    <div className='col-xs-4'>
-                      <div className='row'>
-                        節省($)
-                      </div>
+              </div>
+              <div className='cartDetailItemRight'>
+                <div className='inputDetailHeader'>
 
+                  <div className='col-xs-4 col-xs-offset-2 purchaseHeader'>
+                    <div className='row'>
+                      採購計畫
                     </div>
-                    <div className='col-xs-4'>
-                      <div className='row'>
-                        到貨率(%)
+                    <div className='row purchaseHeaderItem'>
+                      <div className='col-xs-6'>
+                        <div className='row'>
+                          預算($/KG)
+                        </div>
+                      </div>
+                      <div className='col-xs-6'>
+                        <div className='row'>
+                          數量(KG)
+                        </div>
                       </div>
                     </div>
                   </div>
+                  <div className='col-xs-5 estimateHeader'>
+                    <div className='row'>
+                      交易與市場預估
+                    </div>
+                    <div className='row estimateHeaderItem'>
+                      <div className='col-xs-4'>
+                        <div className='row'>
+                          成交價
+                        </div>
+                      </div>
+                      <div className='col-xs-4'>
+                        <div className='row'>
+                          節省($)
+                        </div>
+
+                      </div>
+                      <div className='col-xs-4'>
+                        <div className='row'>
+                          到貨率(%)
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
                 </div>
 
+                {this.displayItemLine(eachItem)}
+
               </div>
-
-              {this.displayItemLine(eachItem)}
-
             </div>
-          </div>
-        );
+          );
+        }else{
+          return (
+            <div key={eachItem.itemId} className='cartDetailItem'>
+              <div className='cartDetailItemLeft'>
+                <div className='itemName'>
+                  <h3>{eachItem.itemName}</h3>
+                  <div className='editMenu' onClick={(e)=> this.clickItemEditMenu(eachItem)}>
+                    <i className="fa fa-ellipsis-v" aria-hidden="true"></i>
+                    <div className='editMenuBlock'>
+                      <div className="arrow-left"></div>
+                      <div className='editMenuEdit'>
+                        <i className="fa fa-pencil-square-o" aria-hidden="true"></i>
+                        <h6>編輯品項</h6>
+                      </div>
+                      <div className='editMenuDelete'>
+                        <i className="fa fa-trash" aria-hidden="true"></i>
+                        <h6>刪除品項</h6>
+                      </div>
+
+                    </div>
+                  </div>
+
+                </div>
+                <div className='itemGrade'>
+                  <div className='itemGradeRow'>
+                    <div className='itemGradeSelection'>
+                      <h4>{eachItem.grade}</h4>
+                    </div>
+                    <div className='itemGradeTitle'>
+                      <h4>品級：</h4>
+                    </div>
+
+                  </div>
+                </div>
+              </div>
+              <div className='cartDetailItemRight'>
+                <div className='inputDetailHeader'>
+
+                  <div className='col-xs-4 col-xs-offset-2 purchaseHeader'>
+                    <div className='row'>
+                      採購計畫
+                    </div>
+                    <div className='row purchaseHeaderItem'>
+                      <div className='col-xs-6'>
+                        <div className='row'>
+                          預算($/KG)
+                        </div>
+                      </div>
+                      <div className='col-xs-6'>
+                        <div className='row'>
+                          數量(KG)
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div className='col-xs-5 estimateHeader'>
+                    <div className='row'>
+                      交易與市場預估
+                    </div>
+                    <div className='row estimateHeaderItem'>
+                      <div className='col-xs-4'>
+                        <div className='row'>
+                          成交價
+                        </div>
+                      </div>
+                      <div className='col-xs-4'>
+                        <div className='row'>
+                          節省($)
+                        </div>
+
+                      </div>
+                      <div className='col-xs-4'>
+                        <div className='row'>
+                          到貨率(%)
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                </div>
+
+                {this.displayItemLine(eachItem)}
+
+              </div>
+            </div>
+          );
+        };
       }.bind(this));
     }else{
       if(!this.state.cartEditing){
@@ -390,6 +493,16 @@ export default RegCart = React.createClass({
         );
       }
     };
+  },
+
+  clickItemEditMenu: function(eachItem){
+    if(this.state.itemOnEdit){
+      this.setState({itemOnEdit: false});
+
+    }else{
+      this.setState({itemOnEdit: eachItem.itemId});
+    };
+
   },
 
   displayItemLine: function(eachItem){
@@ -472,6 +585,7 @@ export default RegCart = React.createClass({
     var costSum = 0;
 
     if(thisCart.itemDetails.length>0){// there is at least one item in the cart.
+
     };
     return costSum;
   },
@@ -733,7 +847,6 @@ export default RegCart = React.createClass({
       }
     }else{
       // No cart is selected. So no data to render.
-
     };
   },
 
@@ -1002,7 +1115,6 @@ export default RegCart = React.createClass({
 
   renderVarietyOptions: function(itemName){
 
-
     var itemDetails = this.state.cartEditingContent;
     var vareities = CropTypes.find({name_crop: itemName}).fetch();
 
@@ -1035,73 +1147,65 @@ export default RegCart = React.createClass({
       this.setState({cartEditingContent: itemDetails});
       $('#budget').val(0);
       $('#volume').val(0);
-      /*
-          var itemDetails = {
-            itemName: itemObject.name_crop,
-            grade: gradeNames[0],
-            varietySelections: [],
-          };
-      */
+
     }else{ // ask for number input.
       this.setState({ enteringLineError: 'col-xs-12 error'});
     };
   },
 
   displayLine: function(){
-      var itemDetails = this.state.cartEditingContent;
-      if(itemDetails.varietySelections.length>0){ // there are selected variety lines
+    var itemDetails = this.state.cartEditingContent;
+    if(itemDetails.varietySelections.length>0){ // there are selected variety lines
 
-        return itemDetails.varietySelections.map(varietyObject => (
-         <div key={varietyObject.varietyName} className='inputDetailEntries entered'>
-           <div className='col-xs-2'>
-             <div className='row'>
-               <h4>{varietyObject.varietyName}</h4>
-             </div>
+      return itemDetails.varietySelections.map(varietyObject => (
+       <div key={varietyObject.varietyName} className='inputDetailEntries entered'>
+         <div className='col-xs-2'>
+           <div className='row'>
+             <h4>{varietyObject.varietyName}</h4>
            </div>
-           <div className='col-xs-4'>
-             <div className='row'>
-               <div className='col-xs-6'>
-                 <div className='row itemBudget'>
-                   ${varietyObject.varietyPrice}
-                 </div>
-               </div>
-               <div className='col-xs-6'>
-                 <div className='row itemVolume'>
-                   {varietyObject.varietyVolume}
-                 </div>
+         </div>
+         <div className='col-xs-4'>
+           <div className='row'>
+             <div className='col-xs-6'>
+               <div className='row itemBudget'>
+                 ${varietyObject.varietyPrice}
                </div>
              </div>
-           </div>
-           <div className='col-xs-5'>
-             <div className='row'>
-               <div className='col-xs-4'>
-                 <div className='info'>
-                   $33
-                 </div>
+             <div className='col-xs-6'>
+               <div className='row itemVolume'>
+                 {varietyObject.varietyVolume}
                </div>
-               <div className='col-xs-4'>
-                 <div className='info'>
-                   $ 9
-                 </div>
-               </div>
-               <div className='col-xs-4'>
-                 <div className='info'>
-                   >99%
-                 </div>
-               </div>
-
-             </div>
-           </div>
-           <div className='col-xs-1'>
-             <div className='row'>
-               <i className="fa fa-times-circle-o remove" aria-hidden="true" onClick={(e)=>this.removeVariety(varietyObject)}></i>
              </div>
            </div>
          </div>
-       ));
+         <div className='col-xs-5'>
+           <div className='row'>
+             <div className='col-xs-4'>
+               <div className='info'>
+                 $33
+               </div>
+             </div>
+             <div className='col-xs-4'>
+               <div className='info'>
+                 $ 9
+               </div>
+             </div>
+             <div className='col-xs-4'>
+               <div className='info'>
+                 >99%
+               </div>
+             </div>
 
-      };
-
+           </div>
+         </div>
+         <div className='col-xs-1'>
+           <div className='row'>
+             <i className="fa fa-times-circle-o remove" aria-hidden="true" onClick={(e)=>this.removeVariety(varietyObject)}></i>
+           </div>
+         </div>
+       </div>
+     ));
+    };
   },
 
   removeVariety: function(varietyObject){
@@ -1149,6 +1253,102 @@ export default RegCart = React.createClass({
     }.bind(this));
   },
 
+  numCarts: function(){
+    return this.data.currentUser.profile.cart.length;
+  },
+
+  weeklyDeliveryDay: function(){
+    var currentUser = this.data.currentUser;
+    var deliveryDays = [];
+
+    if(currentUser.profile.cart.length>0){
+      currentUser.profile.cart.map(function(eachCart){
+        eachCart.deliveryDays.map(function(eachDay){
+          deliveryDays.push(eachDay);
+        });
+      });
+    };
+
+    var weekdays = ['SUN','MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+    var weekdaysCharacters = ['日','一', '二', '三', '四', '五', '六'];
+    var weekdaysCharactersOutput = [];
+
+    weekdays.map(function(eachDay){
+      if(deliveryDays.indexOf(eachDay)>=0){
+        weekdaysCharactersOutput.push(weekdaysCharacters[weekdays.indexOf(eachDay)]);
+      }
+    });
+
+    return weekdaysCharactersOutput.map(function(eachDay){
+      return (
+        <div key={eachDay} className='allCartSummaryDeliveryDay'>
+          {eachDay}
+        </div>
+      );
+    });
+  },
+
+  firstDeliveryDate: function(){
+    var currentUser = this.data.currentUser;
+    var weekdays = ['SUN','MON', 'TUE', 'WED', 'THU', 'FRI', 'SAT'];
+    var weekdaysCharacters = ['日','一', '二', '三', '四', '五', '六'];
+    var deliveryDays = [];
+
+    if(currentUser.profile.cart.length>0){
+      currentUser.profile.cart.map(function(eachCart){
+        eachCart.deliveryDays.map(function(eachDay){
+          deliveryDays.push(eachDay);
+        });
+      });
+    };
+
+    var today = new Date();
+    var firstWeekday = moment(today).add(3, 'days');
+    var output = [];
+
+    for(i=moment(firstWeekday).day(); i<(moment(firstWeekday).day()+7); i++){
+      if(i<7){
+        if(deliveryDays.every(eachDay => eachDay!=weekdays[i])){
+        }else{
+          output.push(i);
+        };
+      }else{
+        if(deliveryDays.every(eachDay => eachDay!=weekdays[i-7])){
+        }else{
+          output.push(i);
+        };
+      };
+    };
+
+    return output.map(function(each){
+      var thisDay = moment(firstWeekday).add((each-moment(firstWeekday).day()), 'days');
+      return (
+        <option key={thisDay} value={thisDay}>
+          {moment(thisDay).format("YYYY")} 年 {moment(thisDay).format("M")} 月 {moment(thisDay).format("D")} 日 ({weekdaysCharacters[moment(thisDay).day()]})
+        </option>
+      );
+    });
+  },
+
+  weeklyBudget: function(){
+    var currentUser = this.data.currentUser;
+    var weeklyBudget = 0;
+
+    if(currentUser.profile.cart.length>0){
+      currentUser.profile.cart.map(function(eachCart){
+        if(eachCart.deliveryDays.length>0){
+          eachCart.itemDetails.map(function(eachItem){
+            eachItem.varietySelections.map(function(eachVariety){
+                weeklyBudget = weeklyBudget + eachVariety.varietyPrice* eachVariety.varietyVolume*eachCart.deliveryDays.length;
+            });
+          });
+        };
+      });
+    };
+
+    return weeklyBudget.toLocaleString();
+  },
+
   render(){
     return (
       <div>
@@ -1179,10 +1379,7 @@ export default RegCart = React.createClass({
                           {this.renderCartContent()}
                         </div>
 
-
                       </div>
-
-
 
                       <div className='row'>
                       </div>
@@ -1196,14 +1393,59 @@ export default RegCart = React.createClass({
                 <div className="col-xs-4 col-sm-5 col-md-4">
                   <div className='allCartSummaryColumn'>
                     <div className='allCartSummaryHeader'>
-                      <h3>一週總覽</h3>
+                      <h3>一週菜車總覽</h3>
                     </div>
                     <div className='allCartSummaryRow'>
-                      <h3>一週總覽</h3>
+                      <div className='allCartSummaryTitle'>
+                        <h4>菜車設置：</h4>
+                      </div>
+                      <div className='allCartSummaryContent'>
+                        共 {this.numCarts()} 種
+                      </div>
                     </div>
                     <div className='allCartSummaryRow'>
-                      <h3>一週總覽</h3>
+                      <div className='allCartSummaryTitle'>
+                        <h4>每週送菜日：</h4>
+                      </div>
+                      <div className='allCartSummaryContent'>
+                        {this.weeklyDeliveryDay()}
+                      </div>
                     </div>
+                    <div className='allCartSummaryRow'>
+                      <div className='allCartSummaryTitle'>
+                        <h4>首次送菜日期：</h4>
+                      </div>
+                      <div className='allCartSummaryContent'>
+                        <div className='allCartFirstDay'>
+                          <select>
+                            {this.firstDeliveryDate()}
+                          </select>
+                        </div>
+                      </div>
+                    </div>
+                    <div className='allCartSummaryRow'>
+                      <div className='allCartSummaryTitle'>
+                        <h4>單週採購預算：</h4>
+                      </div>
+                      <div className='allCartSummaryContent'>
+                        ${this.weeklyBudget()}
+                      </div>
+                    </div>
+                    <div className='allCartSummaryRow'>
+                      <div className='allCartSummaryTitle'>
+                        <h4>單週預估總價：</h4>
+                      </div>
+                      <div className='allCartSummaryContent'>
+                      </div>
+                    </div>
+                    <div className='allCartSummaryRow'>
+                      <div className='allCartSummaryTitle'>
+                        <h4>單週預估節省：</h4>
+                      </div>
+                      <div className='allCartSummaryContent'>
+                      </div>
+                    </div>
+
                     <div className='goToPlanConfirmation'>
                       前往基本資料
                     </div>

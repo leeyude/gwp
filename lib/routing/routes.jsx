@@ -112,3 +112,11 @@ privateRoutes.route('/admin/croplist', {
     })
   }
 });
+
+privateRoutes.route('/admin/market_coverage', {
+  name: 'Market Coverage',
+  action: function(){
+    mount(MarketCoverage,{
+    })
+  }
+});

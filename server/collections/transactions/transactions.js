@@ -70,21 +70,17 @@ Meteor.methods({
 
             dataCount = dataCount+dataMore.length;
           };
-
-
-
         }
       }
 
       console.log('Accumulation: '+dataCount+' lines of records in this year.');
 
     };
-
-
-
-
   },
-
-
-
 });
+
+function distinct(collection, field) {
+  return _.uniq(collection.find({}, {
+    sort: {[field]: 1}, fields: {[field]: 1}
+  }).map(x => x[field]), true);
+};
