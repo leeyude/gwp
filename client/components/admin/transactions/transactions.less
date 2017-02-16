@@ -1,0 +1,40 @@
+@import "../../../../lib/styles/main.import.less";
+
+.controlPanel, .infoPanel {
+  display: inline-block;
+  position: relative;
+  border: solid 1px #777;
+  padding: 15px;
+  border-radius: 4px;
+  margin-bottom: 10px;
+
+  .panelBlock {
+    border: solid 1px #777;
+    padding: 15px;
+    border-radius: 4px;
+    margin-bottom: 10px;
+
+    .panelContent {
+      display: inline-block;
+      position: relative;
+      margin-left: 15px;
+
+      label {
+        float: left;
+      }
+
+      .panelContentDetail {
+        display: inline-block;
+        width: auto;
+        margin-left: 15px;
+        float: left;
+      }
+    }
+  }
+
+  .divider {
+    border-bottom: solid 1px #777;
+    margin-top: 10px;
+    margin-bottom: 10px;
+  }
+}

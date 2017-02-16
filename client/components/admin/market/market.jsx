@@ -124,9 +124,6 @@ export default MarketCoverage = React.createClass({
     var servingFruit = this.state.servingFruit;
     var coverage = this.state.coverage;
 
-    console.log(servingVeggie, servingFruit);
-
-
     Meteor.call("updateMarket", marketId, servingVeggie, servingFruit, coverage, function(error, result){
       if(error){
         console.log("error", error);

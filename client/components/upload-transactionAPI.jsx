@@ -6,7 +6,7 @@ export default Upload_transactions = React.createClass({
     e.preventDefault();
     console.log("submit");
 
-    Meteor.call("insertTransactions", function(error, result){
+    Meteor.call("createTransactions", function(error, result){
       if(error){
         console.log("error", error);
       }

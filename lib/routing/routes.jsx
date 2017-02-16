@@ -87,16 +87,6 @@ publicRoutes.route('/upload-croptype', {
   }
 });
 
-
-publicRoutes.route('/upload-transactions', {
-  name: 'Transactions',
-  action: function(){
-    mount(Upload_transactions,{
-    })
-  }
-});
-
-
 privateRoutes.route('/dashboard', {
   name: 'Dashboard',
   action: function(){
@@ -117,6 +107,23 @@ privateRoutes.route('/admin/market_coverage', {
   name: 'Market Coverage',
   action: function(){
     mount(MarketCoverage,{
+    })
+  }
+});
+
+privateRoutes.route('/admin/transactions_dashboard', {
+  name: 'Transaction Dashboard',
+  action: function(){
+    mount(TransactionDashboard,{
+    })
+  }
+});
+
+
+publicRoutes.route('/upload-transactions', {
+  name: 'Transactions',
+  action: function(){
+    mount(Upload_transactions,{
     })
   }
 });

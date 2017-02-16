@@ -1,86 +1,237 @@
 import { Mongo } from 'meteor/mongo';
-
+import { getDatesArray, convertADtoTWCalYear, convertToAD } from "../../functions/globalFunctions";
 
 export const Transactions = new Mongo.Collection("transactions");
+export const TransactionsSummary = new Mongo.Collection("transactionsSummary");
 
 Meteor.methods({
-  insertTransactions:function(){
-    var daysInMonths = [
-      [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
-      [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
-      [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
-      [31, 28, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
-      [31, 29, 31, 30, 31, 30, 31, 31, 30, 31, 30, 31],
-      [31],
+  createTransactions:function(){
+    var startDate = '101.01.01';
+    var today = new Date();
+    var yesterday = moment(today).subtract(1, 'days');
+    var yesterdayInput = convertADtoTWCalYear(yesterdayInput);
 
-    ];
+    var dateArray = getDatesArray(startDate, yesterdayInput);
 
-    var dataCount = 0;
+    var numAccumulated = 0;
 
-    for (i=0; i<6; i++){
-      for (j=1; j<13; j++){
-        for (k=1; k<daysInMonths[i][j-1]+1; k++){
+    for(i=0; i<dateArray.length; i++){
+      if(TransactionsSummary.findOne({queryDate: dateArray[i]})){
 
-          if(j<10){
-            var month = '0'+j;
-          }else{
-            var month = j;
-          }
+      }else{
+        var response = HTTP.call('GET', 'http://data.coa.gov.tw/Service/OpenData/FromM/FarmTransData.aspx?StartDate='+dateArray[i]+'&EndDate='+dateArray[i], {
+            headers: {
+              'Content-Type' : 'text/html; charset=UTF-8'
+            }
+        });
 
-          var year =i+101;
-          if(k<10){
-            var string = year+'.'+month+'.0'+k;
-          }else{
-            var string = year+'.'+month+'.'+k;
-          }
+        var data = JSON.parse(response.content);
 
-          var response = HTTP.call('GET', 'http://data.coa.gov.tw/Service/OpenData/FromM/FarmTransData.aspx?StartDate='+string+'&EndDate='+string, {
+        for (j=0; j<data.length; j++){
+          Transactions.insert( data[j]);
+        };
+
+        var numRecords = data.length;
+
+        if(data.length<3001){
+        }else{
+          var responseMore = HTTP.call('GET', 'http://data.coa.gov.tw/Service/OpenData/FromM/FarmTransData.aspx?$skip=3001&StartDate='+dateArray[i]+'&EndDate='+dateArray[i], {
               headers: {
                 'Content-Type' : 'text/html; charset=UTF-8'
               }
           });
 
-          var data = JSON.parse(response.content);
+          var dataMore = JSON.parse(responseMore.content);
 
-          for (a=0; a<data.length; a++){
-            Transactions.insert( data[a]);
+          for (j=0; j<dataMore.length; j++){
+            Transactions.insert( dataMore[j]);
           };
 
-          console.log(string+': there are '+data.length+' lines of data.')
+          numRecords = numRecords +dataMore.length;
+        };
 
-          dataCount = dataCount+data.length;
 
-          if(data.length<3001){
-          }else{
-            var responseMore = HTTP.call('GET', 'http://data.coa.gov.tw/Service/OpenData/FromM/FarmTransData.aspx?$skip=3001&StartDate='+string+'&EndDate='+string, {
-                headers: {
-                  'Content-Type' : 'text/html; charset=UTF-8'
-                }
-            });
+        numAccumulated = numAccumulated + numRecords;
 
-            var dataMore = JSON.parse(responseMore.content);
+        var oneSummaryItem = {
+          createAt: new Date(),
+          queryDate: dateArray[i],
+          year: moment(convertToAD(dateArray[i])).year(),
+          month: moment(convertToAD(dateArray[i])).month(),
+          day: moment(convertToAD(dateArray[i])).date(),
+          numRecordsOfTheDay: numRecords,
+          numAccumulated: numAccumulated,
+        };
+        TransactionsSummary.insert(oneSummaryItem);
+        console.log(dateArray[i], ": number of records is "+numRecords+"."+" Accumulated number is "+numAccumulated+".");
+      };
+    };
 
-            for (a=0; a<dataMore.length; a++){
-              Transactions.insert( dataMore[a]);
-            };
+  },
 
-            var dataTotal = dataMore.length+data.length;
+  updateTransactions: function(startDate){
+    var today = new Date();
+    var yesterday = moment(today).subtract(1, 'days');
 
-            console.log(string+': there are additional '+dataMore.length+' lines of data.'+' Total '+dataTotal+' combined.')
+    var startDateToAd = convertToAD(startDate);
 
-            dataCount = dataCount+dataMore.length;
+    if(moment(startDateToAd).isBefore(yesterday)){
+      var yesterdayInput = convertADtoTWCalYear(yesterdayInput);
+      var startDateInput = convertADtoTWCalYear(moment(convertToAD(startDate)).add(1, 'days'));
+
+      var dateArray = getDatesArray(startDateInput, yesterdayInput);
+      var numAccumulated = TransactionsSummary.findOne({ queryDate: startDate}).numAccumulated;
+
+      for(i=0; i<dateArray.length; i++){
+
+        var response = HTTP.call('GET', 'http://data.coa.gov.tw/Service/OpenData/FromM/FarmTransData.aspx?StartDate='+dateArray[i]+'&EndDate='+dateArray[i], {
+            headers: {
+              'Content-Type' : 'text/html; charset=UTF-8'
+            }
+        });
+
+        var data = JSON.parse(response.content);
+
+        for (j=0; j<data.length; j++){
+          Transactions.insert( data[j]);
+        };
+
+        var numRecords = data.length;
+
+        if(data.length<3001){
+        }else{
+          var responseMore = HTTP.call('GET', 'http://data.coa.gov.tw/Service/OpenData/FromM/FarmTransData.aspx?$skip=3001&StartDate='+dateArray[i]+'&EndDate='+dateArray[i], {
+              headers: {
+                'Content-Type' : 'text/html; charset=UTF-8'
+              }
+          });
+
+          var dataMore = JSON.parse(responseMore.content);
+
+          for (j=0; j<dataMore.length; j++){
+            Transactions.insert( dataMore[j]);
           };
-        }
-      }
 
-      console.log('Accumulation: '+dataCount+' lines of records in this year.');
+          numRecords = numRecords +dataMore.length;
+        };
+        numAccumulated = numAccumulated + numRecords;
+
+        var oneSummaryItem = {
+          createAt: new Date(),
+          queryDate: dateArray[i],
+          year: moment(convertToAD(dateArray[i])).year(),
+          month: moment(convertToAD(dateArray[i])).month(),
+          day: moment(convertToAD(dateArray[i])).date(),
+          numRecordsOfTheDay: numRecords,
+          numAccumulated: numAccumulated,
+        };
+        TransactionsSummary.insert(oneSummaryItem);
+      };
+      return 'updated';
+    }else{
+      return false;
 
     };
   },
-});
 
-function distinct(collection, field) {
-  return _.uniq(collection.find({}, {
-    sort: {[field]: 1}, fields: {[field]: 1}
-  }).map(x => x[field]), true);
-};
+  countSourceRecords: function(queryDate){
+    var response = HTTP.call('GET', 'http://data.coa.gov.tw/Service/OpenData/FromM/FarmTransData.aspx?StartDate='+queryDate+'&EndDate='+queryDate, {
+        headers: {
+          'Content-Type' : 'text/html; charset=UTF-8'
+        }
+    });
+
+    var data = JSON.parse(response.content);
+    var numRecords = data.length;
+
+    if(data.length<3001){
+    }else{
+      var responseMore = HTTP.call('GET', 'http://data.coa.gov.tw/Service/OpenData/FromM/FarmTransData.aspx?$skip=3001&StartDate='+queryDate+'&EndDate='+queryDate, {
+          headers: {
+            'Content-Type' : 'text/html; charset=UTF-8'
+          }
+      });
+
+      var dataMore = JSON.parse(responseMore.content);
+      numRecords = numRecords +dataMore.length;
+
+    };
+    console.log(queryDate, numRecords);
+
+    return numRecords;
+  },
+
+  countRecords: function(){
+    return TransactionsSummary.findOne({}, {
+      sort: { numAccumulated: -1},
+      limit: 1
+    }).numAccumulated;
+  },
+
+  earliestDate: function(){
+    return TransactionsSummary.findOne({}, {
+      fields: {
+        queryDate: 1
+      },
+      sort: {
+        queryDate: 1
+      },
+      limit: 1
+    }).queryDate;
+  },
+
+  mostCurrentDate: function(){
+    return TransactionsSummary.findOne({}, {
+      fields: {
+        queryDate: 1
+      },
+      sort: {
+        queryDate: -1
+      },
+      limit: 1
+    }).queryDate;
+  },
+
+  countRecordsLatestDate: function(){
+     var sevenRecords = TransactionsSummary.find({}, {
+      sort: {
+        queryDate: -1
+      },
+      limit: 7 // to show 7 days of data
+    }).fetch();
+
+    return sevenRecords.map(function(record){
+      var queryDate = record.queryDate;
+      var numRecordsOfTheDay = record.numRecordsOfTheDay;
+
+      var response = HTTP.call('GET', 'http://data.coa.gov.tw/Service/OpenData/FromM/FarmTransData.aspx?StartDate='+queryDate+'&EndDate='+queryDate, {
+          headers: {
+            'Content-Type' : 'text/html; charset=UTF-8'
+          }
+      });
+
+      var data = JSON.parse(response.content);
+      var numRecords = data.length;
+
+      if(data.length<3001){
+      }else{
+        var responseMore = HTTP.call('GET', 'http://data.coa.gov.tw/Service/OpenData/FromM/FarmTransData.aspx?$skip=3001&StartDate='+queryDate+'&EndDate='+queryDate, {
+            headers: {
+              'Content-Type' : 'text/html; charset=UTF-8'
+            }
+        });
+
+        var dataMore = JSON.parse(responseMore.content);
+        numRecords = numRecords +dataMore.length;
+      };
+
+      var numRecordsSource = numRecords;
+
+      return {
+        queryDate: queryDate,
+        numRecordsOfTheDay: numRecordsOfTheDay,
+        numRecordsSource: numRecordsSource
+      };
+    });
+  },
+});
